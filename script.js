@@ -1,49 +1,53 @@
+const container = document.getElementById('container');
+const etchCanvas = document.getElementById('etchCanvas');
 
-const body = document.querySelector('body');
-body.style.backgroundColor = 'rgba(255, 0, 0, 0.6)';
-body.style.display = 'flex';
-body.style.flexDirection = 'column';
-body.style.justifyContent = 'center';
-body.style.alignItems = 'center';
 
-const h1 = document.createElement('h1');
-h1.textContent = 'Etch-a-sketch'
-const h2 = document.createElement('h2');
-h2.textContent = 'Press F5 to shake the Etch-a-sketch canvas!'
-
-body.appendChild(h1);
-body.appendChild(h2);
+const clearCanvas = document.getElementById('clearCanvas');
+clearCanvas.addEventListener('click', function(){
+    document.querySelectorAll('.pixels').forEach(pixel => pixel.style.backgroundColor = 'white')
+});
 
 
 
-const etchCanvas = document.createElement('div');
 
-let gridWidth = 200;
-let gridHeight = 300;
-let pixelSize = 5;
-let numOfPixels = gridWidth*gridHeight/pixelSize;
+let defaultResolution = 50;
 
-etchCanvas.style.border = '10px solid black';
-etchCanvas.style.backgroundColor = 'white';
-etchCanvas.style.height = `${gridHeight}px`;
-etchCanvas.style.width = `${gridWidth}px`;
-etchCanvas.style.display = 'grid';
-etchCanvas.style.gridTemplateColumns = `repeat(${gridWidth/pixelSize}, ${pixelSize}px)`;
-etchCanvas.style.gridTemplateRows = `repeat(${gridHeight/pixelSize}, ${pixelSize}px)`;
+defineGrid(defaultResolution);
+container.appendChild(etchCanvas);
 
+function defineGrid(resolution) {
+    let pixelSize = 700 / resolution;
+    let numOfSquares = resolution*resolution;
 
+    etchCanvas.style.gridTemplateColumns = `repeat(${700 / pixelSize}, ${pixelSize}px)`;
+    etchCanvas.style.gridTemplateRows = `repeat(${700 / pixelSize}, ${pixelSize}px)`;
 
-for (let i = 0; i < numOfPixels; i++) {
-    const etchPixel = document.createElement('div');
+    for (let i = 0; i < numOfSquares; i++) {
+        const etchPixel = document.createElement('div');
 
-    etchPixel.addEventListener('mouseover', colorRed) 
-    etchCanvas.appendChild(etchPixel);
+        etchPixel.classList.add('pixels');
+
+        etchPixel.addEventListener('mouseover', colorRed)
+        etchCanvas.appendChild(etchPixel);
+    }
 }
-
-body.appendChild(etchCanvas);
-
 
 
 function colorRed(e) {
     e.target.style.backgroundColor = 'red';
 };
+
+
+
+const buttons = document.querySelectorAll('.option');
+
+
+buttons.forEach(button => {
+    button.addEventListener('click', function (e) {
+
+        etchCanvas.innerHTML = '';
+        let newResolution = parseInt(e.target.innerText.substr(-2));
+        defineGrid(newResolution);
+    })
+})
+
