@@ -1,4 +1,4 @@
-const container = document.getElementById('container');
+const container = document.getElementById('canvas-container');
 const etchCanvas = document.getElementById('etchCanvas');
 
 
@@ -26,15 +26,16 @@ function defineGrid(resolution) {
         const etchPixel = document.createElement('div');
 
         etchPixel.classList.add('pixels');
-
-        etchPixel.addEventListener('mouseover', colorRed)
+        etchPixel.addEventListener('mouseover', applyColor)
         etchCanvas.appendChild(etchPixel);
     }
 }
 
-
-function colorRed(e) {
-    e.target.style.backgroundColor = 'red';
+const inputCOolor = document.getElementById('input-color');
+function applyColor(e) {
+    // Get current color 
+    const currentColor = inputCOolor.value
+    e.target.style.backgroundColor = currentColor;
 };
 
 
